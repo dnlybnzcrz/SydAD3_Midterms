@@ -1,0 +1,17 @@
+- name: Setup firewall in Ubuntu
+  ansible.builtin.systemd:
+    name: ufw
+    enabled: yes
+    state: started
+  when: ansible_os_family == 'Debian'
+
+- name: Open firewall ports for SSH, HTTP, and HTTPS
+  ansible.builtin.ufw:
+    port: "{{ item }}"
+    proto: tcp
+    state: enabled
+  with_items:
+    - '22'
+    - '80'
+    - '443'
+  when: ansible_os_family == 'Debian'
